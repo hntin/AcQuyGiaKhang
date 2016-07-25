@@ -13,13 +13,19 @@
         <h3><s:property value="#hm_LSP_SP.key"/></h3>
         <div id="products">
             <ul>
-                <s:iterator value="#hm_LSP_SP.value">
+                <s:iterator var="spDTO" value="#hm_LSP_SP.value">
                     <li>
                         <div class="content">
-                            <a href="./XemChiTietSanPham">
-                                <img src="images/user/products/timthumb.jpg" width="210" height="250"/>
-                                <p class="title">Ắc quy khô 12V-62Ah 56225</p>                
-                                <p class="sanpham_gia"><span>Giá: 715,000 VNĐ</span></p>
+                            <a href="./XemChiTietSanPham?maSanPham=<s:property value="#spDTO.MaSanPham"/>">
+                                <img src="<s:property value="#spDTO.HinhDaiDien"/>" width="210" height="250"/>
+                                <p class="title"><s:property value="#spDTO.TenSanPham"/></p>  
+                                <s:set var="gia" value="#spDTO.Gia"></s:set>
+                                <s:if test="#gia == 0">
+                                    <p class="sanpham_gia"><span>Giá: Liên hệ</span></p>
+                                </s:if>
+                                <s:else>
+                                    <p class="sanpham_gia"><span>Giá: <s:property value="#spDTO.Gia"/> (VNĐ)</span></p>
+                                </s:else>
                         </div>
                     </li>
                 </s:iterator>
@@ -28,24 +34,6 @@
         <div class="clr"></div>
         <br>
     </s:iterator>
-
-
-    <div class="clr"></div>
-    <br>
-    <h3>Ắc Quy Đồng Nai</h3>
-    <div id="products">
-        <ul>
-            <li>
-                <div class="content">
-                    <a href="./XemChiTietSanPham">
-                        <img src="images/user/products/timthumb.jpg" width="210" height="250"/>
-                        <p class="title">Ắc quy khô 12V-62Ah 56225</p>
-                    </a>
-                    <p class="sanpham_gia"><span>Giá: 715,000 VNĐ</span></p>
-                </div>
-            </li>
-        </ul>
-    </div>     
     <div class="clr"></div>
     <br>
 </div>

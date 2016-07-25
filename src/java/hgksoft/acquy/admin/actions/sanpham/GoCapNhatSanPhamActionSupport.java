@@ -108,7 +108,7 @@ public class GoCapNhatSanPhamActionSupport extends ActionSupport {
 
         List<NhaCCDTO> dsNhaCCDTO = nccBO.getDSTatCaNhaCC();
         List<QuocGiaDTO> dsQuocGiaDTO = quocgiaBO.getDSTatCaQuocGia();
-        List<LoaiSanPhamDTO> dsLoaiSPDTO = loaiSPBO.getDSLoaiSanPham("1");
+        List<LoaiSanPhamDTO> dsLoaiSPDTO = loaiSPBO.getDSTatCaLoaiSanPham();
         List<TinhTrangDTO> dsTinhTrangDTO = ttBO.getDSTatCaTinhTrang();
 
         for (int i = 0; i < dsNhaCCDTO.size(); i++) {

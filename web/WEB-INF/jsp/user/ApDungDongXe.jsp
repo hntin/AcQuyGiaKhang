@@ -13,7 +13,7 @@
         <div id="website">
             <jsp:include page="KhungBenTren.jsp" /> 
             <jsp:include page="KhungQuangCao.jsp" />
-            
+
             <!-- Phần Main -->
             <div id="main">
                 <jsp:include page="KhungBenTrai.jsp" /> 
@@ -47,16 +47,22 @@
                     <h3>Danh mục sản phẩm tương thích</h3>
                     <div id="products">
                         <ul>
-                            <s:iterator var="i" step="1" value="dsSanPhamTuongThichDTO">
-                            <li>
-                                <div class="content">
-                                    <a href="./XemChiTietSanPham">
-                                        <img src="<s:property value="%{HinhDaiDien}"/>" width="210" height="250"/>
-                                        <p class="title"><s:property value="%{TenSanPham}"/></p>
-                                    </a>
-                                    <p class="sanpham_gia"><span>Giá: <s:property value="%{Gia}"/> (VNĐ)</span></p>
-                                </div>
-                            </li>                            
+                            <s:iterator var="sanphamDTO" step="1" value="dsSanPhamTuongThichDTO">
+                                <s:set var="gia" value="%{Gia}"></s:set>
+                                    <li>
+                                        <div class="content">
+                                            <a href="./XemChiTietSanPham">
+                                                <img src="<s:property value="%{HinhDaiDien}"/>" width="210" height="250"/>
+                                            <p class="title"><s:property value="%{TenSanPham}"/></p>
+                                        </a>
+                                        <s:if test="#gia == 0">
+                                            <p class="sanpham_gia"><span>Giá: Liên hệ</span></p>
+                                        </s:if>
+                                        <s:else>
+                                            <p class="sanpham_gia"><span>Giá: <s:property value="%{Gia}"/> (VNĐ)</span></p>
+                                        </s:else>
+                                    </div>
+                                </li>                            
                             </s:iterator>
                         </ul>
                     </div>

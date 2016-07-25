@@ -25,17 +25,20 @@
                     <h3>Danh sách sản phẩm tương ứng</h3>
                     <div id="products">
                         <ul>
-                            <%int i=0;%>
-                            <s:iterator var="i" step="1" value="dsSanPhamDTO">
-                                
+                            <s:iterator var="spDTO" step="1" value="dsSanPhamDTO">
                                 <li>
                                     <div class="content">
                                         <a href="./XemChiTietSanPham?maSanPham=<s:property value='MaSanPham'/>">
                                             <img src="<s:property value="hinhDaiDien"/>" width="210" height="250"/>
                                             <p class="title"><s:property value="moTaSanPham"/></p>
                                         </a>
-                                        <p class="sanpham_gia"><span>Giá: <s:property value="gia"/>(VNĐ)</span></p>
-                                        
+                                        <s:set var="gia" value="#spDTO.Gia"></s:set>
+                                        <s:if test="#gia == 0">
+                                            <p class="sanpham_gia"><span>Giá: Liên hệ</span></p>
+                                        </s:if>
+                                        <s:else>
+                                            <p class="sanpham_gia"><span>Giá: <s:property value="#spDTO.Gia"/> (VNĐ)</span></p>
+                                        </s:else>
                                     </div>
                                 </li>  
                             </s:iterator>                                               

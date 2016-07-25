@@ -22,7 +22,13 @@
                         <a href="./XemChiTietSanPham">
                             <img src="<s:property value="%{sanphamDTO.HinhDaiDien}"/>" width="275" height="310"/>
                             <p class="title"><s:property value="%{sanphamDTO.TenSanPham}"/></p>
-                            <p class="sanpham_gia"><span style="margin-left: 80px;">Giá: <s:property value="%{sanphamDTO.Gia}"/> (VNĐ)</span></p>
+                            <s:set var="gia" value="%{sanphamDTO.Gia}"></s:set>
+                            <s:if test="#gia == 0">
+                                <p class="sanpham_gia"><span style="margin-left: 80px;">Giá: Liên hệ</span></p>
+                            </s:if>
+                            <s:else>
+                                <p class="sanpham_gia"><span style="margin-left: 80px;">Giá: <s:property value="%{sanphamDTO.Gia}"/> (VNĐ)</span></p>
+                            </s:else>
                         </a>
                     </div>
                     <div id="product-detail">
@@ -54,8 +60,12 @@
                             </div>
                             <div style="text-align: left; padding-left: 20px; padding-top: 10px;">
                                 <b>Giá:</b> 
-                                <label style="font-weight: bold; color: red;">
-                                    <s:property value="%{sanphamDTO.Gia}"/> (VNĐ) </label>
+                                <s:if test="#gia == 0">
+                                    <label style="font-weight: bold; color: red;">Liên hệ</label>
+                                </s:if>
+                                <s:else>
+                                    <label style="font-weight: bold; color: red;"><s:property value="%{sanphamDTO.Gia}"/> (VNĐ) </label>
+                                </s:else>
                             </div>
                             <div style="text-align: left; padding-left: 20px; padding-top: 10px;">
                                 <b>Tình trạng:</b> 
