@@ -8,7 +8,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <link rel="stylesheet" type="text/css" href="./css/user/style.css"/>
-<link rel="stylesheet" type="text/css" href="./css/admin/admin-style.css"/>
 <link rel="stylesheet" href="./css/user/flexslider.css" type="text/css" media="screen" />
 <link rel="stylesheet" type="text/css"
       href="codebase/fonts/font_roboto/roboto.css" />
@@ -38,6 +37,16 @@
             document.getElementsByName("FormTimKiemApDungUser")[0].submit();
         }
 
+        if (strURL.indexOf("GoGioiThieu") >= 0) {
+            document.getElementsByName("FormTimKiemApDungUser")[0].action = "./GoGioiThieu";
+            document.getElementsByName("FormTimKiemApDungUser")[0].submit();
+        }
+        
+        if (strURL.indexOf("LietKeSanPham") >= 0) {
+            document.getElementsByName("FormTimKiemApDungUser")[0].action = "./LietKeSanPham";
+            document.getElementsByName("FormTimKiemApDungUser")[0].submit();
+        }
+        
     }
 
     function OnChangeLoaiXe() {
@@ -97,18 +106,34 @@
             items:<%=jsonTree.toJSONString()%>
         });
 
-        myTreeView.attachEvent("onSelect", function (id, mode) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (xhttp.readyState == 4 && xhttp.status == 200) {
-                    document.getElementById("demo").innerHTML += xhttp.responseText + "<br>";
-                }
-            };
-            xhttp.open("POST", "./LietKeSanPham", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("select_id=" + id + "&select_mode=" + mode);
-        });
+        myTreeView.attachEvent("onClick", onClickItemTreeView);
+        myTreeView.attachEvent("onSelect", onSelectItemTreeView);
+
+//        myTreeView.attachEvent("onSelect", function (id, mode) {
+//            var xhttp = new XMLHttpRequest();
+//            xhttp.onreadystatechange = function () {
+//                if (xhttp.readyState == 4 && xhttp.status == 200) {
+//                    document.getElementById("demo").innerHTML += xhttp.responseText + "<br>";
+//                }
+//            };
+//            xhttp.open("POST", "./LietKeSanPham", true);
+//            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//            xhttp.send("select_id=" + id + "&select_mode=" + mode);
+//        });
     }
+
+    function onSelectItemTreeView(id) {
+        document.getElementsByName("FormTimKiemApDungUser")[0].action = "./LietKeSanPham?maLoaiSanPham=" + id;
+        document.getElementsByName("FormTimKiemApDungUser")[0].submit();
+        return true;
+    }
+
+    function onClickItemTreeView(id) {
+        alert(id);
+        return true;
+    }
+
+
 </script>
 
 <div id="main-left">

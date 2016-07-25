@@ -39,7 +39,7 @@ public class CapNhatSanPhamActionSupport extends ActionSupport {
     private String tenSanPham;
     private String moTaSanPham;
     private String gia;
-    private String selectedLoaiSP;
+    private int selectedLoaiSP;
     private String selectedNoiSanXuat;
     private String selectedHangSanXuat;
     private File uploadImage;
@@ -100,11 +100,11 @@ public class CapNhatSanPhamActionSupport extends ActionSupport {
         this.gia = gia;
     }
 
-    public String getSelectedLoaiSP() {
+    public int getSelectedLoaiSP() {
         return selectedLoaiSP;
     }
 
-    public void setSelectedLoaiSP(String selectedLoaiSP) {
+    public void setSelectedLoaiSP(int selectedLoaiSP) {
         this.selectedLoaiSP = selectedLoaiSP;
     }
 
@@ -198,7 +198,7 @@ public class CapNhatSanPhamActionSupport extends ActionSupport {
         try {
             List<NhaCCDTO> dsNhaCCDTO = nccBO.getDSTatCaNhaCC();
             List<QuocGiaDTO> dsQuocGiaDTO = quocgiaBO.getDSTatCaQuocGia();
-            List<LoaiSanPhamDTO> dsLoaiSPDTO = loaiSPBO.getDSLoaiSanPham("1");
+            List<LoaiSanPhamDTO> dsLoaiSPDTO = loaiSPBO.getDSTatCaLoaiSanPham();
             List<TinhTrangDTO> dsTinhTrangDTO = ttBO.getDSTatCaTinhTrang();
             for (int i = 0; i < dsNhaCCDTO.size(); i++) {
                 NhaCCDTO nccDTO = dsNhaCCDTO.get(i);

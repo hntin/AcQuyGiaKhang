@@ -19,6 +19,61 @@ img{
     border:0;
 }
 
+.page-caption {
+    margin-top: 50px;
+    text-transform: uppercase;
+    color: blue;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+
+h1{
+    font-family: sans-serif;
+    font-size: 20px;
+    color: forestgreen;
+}
+
+h2{
+    font-family: sans-serif;
+    font-size: 16px;
+    color: green;
+}
+
+h3{
+    font-family: sans-serif;
+    font-size: 12px;
+    color: crimson;
+}
+
+.table1 {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tr:nth-of-type(odd) { 
+    background: white; 
+}
+
+tr:nth-child(even){
+    background-color: white;
+}
+
+th { 
+    background: whitesmoke; 
+    color: #226699; 
+    font-weight: bold; 
+    text-align: center;
+}
+td, th { 
+    padding: 6px; 
+    border: 1px solid #ccc; 
+}
+
+.table1 tr:hover {
+    background-color: lightblue;
+}
+
 body{
     font-family: sans-serif;
     font-size: small;
@@ -235,7 +290,7 @@ body{
     width: 228px;
     float: left;
     background: white;
-    border: 1px solid whitesmoke;
+    border: 1px solid white;
 }
 
 #search-application{
@@ -517,12 +572,20 @@ body{
     margin-top: 5px;
 }
 
-.page-caption {
-    margin-top: 50px;
-    text-transform: uppercase;
-    color: blue;
+.sanpham_gia {
+    color: #333;
     font-weight: bold;
-    font-size: 20px;
-    text-align: center;
-}
+    padding-top: 5px;
+ }
 
+.sanpham_gia span {
+    background: url(../..//images/user/price-1.png);
+    border-radius: 3px;
+    color: #fff;
+    display: inline-block;
+    height: 18px;
+    margin-left: 50px;
+    padding-top: 4px;
+    width: 118px;
+    text-align: center;   
+}

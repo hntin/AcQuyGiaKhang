@@ -134,9 +134,7 @@ public class XemChiTietSanPhamActionSupport extends ActionSupport {
         //</editor-fold>
         
         SanPhamBO spBO = new SanPhamBO();
-        maSanPham = "123";
         this.sanphamDTO = spBO.getSanPhamDTO(maSanPham);
-        
         SanPhamDongXeBO spdxBO = new SanPhamDongXeBO();
         this.dsDongXeTuongThichDTO = spdxBO.getDSDongXeTuongThichSanPham(maSanPham);
         

@@ -311,8 +311,6 @@
         <action name="GoIndex" class="hgksoft.acquy.user.actions.GoIndexActionSupport">
             <result name="success">./WEB-INF/jsp/user/TrangChu.jsp</result>
         </action>
-        <action name="DocDuLieuLoaiSP" class="hgksoft.acquy.user.actions.DocDuLieuLoaiSPActionSupport"> 
-        </action>
         <action name="LietKeSanPham" class="hgksoft.acquy.user.actions.LietKeSanPhamActionSupport">
             <result name="success">./WEB-INF/jsp/user/LietKeSanPham.jsp</result>
         </action>  

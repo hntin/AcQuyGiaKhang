@@ -35,7 +35,7 @@ public class TaoMoiSanPhamActionSupport extends ActionSupport {
     private String tenSP;
     private String moTaSP;
     private String gia;
-    private String selectedLoaiSP;
+    private int selectedLoaiSP;
     private String selectedNoiSanXuat;
     private String selectedHangSanXuat;
     private File uploadImage;
@@ -81,11 +81,11 @@ public class TaoMoiSanPhamActionSupport extends ActionSupport {
         this.gia = gia;
     }
 
-    public String getSelectedLoaiSP() {
+    public int getSelectedLoaiSP() {
         return selectedLoaiSP;
     }
 
-    public void setSelectedLoaiSP(String selectedLoaiSP) {
+    public void setSelectedLoaiSP(int selectedLoaiSP) {
         this.selectedLoaiSP = selectedLoaiSP;
     }
 
@@ -200,7 +200,7 @@ public class TaoMoiSanPhamActionSupport extends ActionSupport {
         try {
             List<NhaCCDTO> dsNhaCCDTO = nccBO.getDSTatCaNhaCC();
             List<QuocGiaDTO> dsQuocGiaDTO = quocgiaBO.getDSTatCaQuocGia();
-            List<LoaiSanPhamDTO> dsLoaiSPDTO = loaiSPBO.getDSLoaiSanPham("1");
+            List<LoaiSanPhamDTO> dsLoaiSPDTO = loaiSPBO.getDSTatCaLoaiSanPham();
             List<TinhTrangDTO> dsTinhTrangDTO = ttBO.getDSTatCaTinhTrang();
 
             for (int i = 0; i < dsNhaCCDTO.size(); i++) {

@@ -1,5 +1,7 @@
-<%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,7 +11,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="./css/user/style.css"/>
-        <link rel="stylesheet" type="text/css" href="./css/admin/admin-style.css"/>
         <link rel="stylesheet" href="./css/user/flexslider.css" type="text/css" media="screen" />
 
     </head>
@@ -21,36 +22,23 @@
             <div id="main">
                 <jsp:include page="KhungBenTrai.jsp" /> 
                 <div id="main-right">
-                    <h3>Ắc quy BOSCH</h3>
+                    <h3>Danh sách sản phẩm tương ứng</h3>
                     <div id="products">
                         <ul>
-                            <li>
-                                <div class="content">
-                                    <a href="./XemChiTietSanPham">
-                                        <img src="images/user/products/timthumb.jpg" width="210" height="250"/>
-                                        <p class="title">Ắc quy khô 12V-62Ah 56225</p>
-                                    </a>
-                                    <p class="price">Giá: liên hệ .... </p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="content">
-                                    <a href="./XemChiTietSanPham">
-                                        <img src="images/user/products/timthumb.jpg" width="210" height="250"/>
-                                        <p class="title">Ắc quy khô 12V-62Ah 56225</p>
-                                    </a>
-                                    <p class="price">Giá: liên hệ .....</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="content">
-                                    <a href="./XemChiTietSanPham">
-                                        <img src="images/user/products/timthumb.jpg" width="210" height="250"/>
-                                        <p class="title">Ắc quy khô 12V-62Ah 56225</p>
-                                    </a>
-                                    <p class="price">Giá: liên hệ</p>
-                                </div>
-                            </li>
+                            <%int i=0;%>
+                            <s:iterator var="i" step="1" value="dsSanPhamDTO">
+                                
+                                <li>
+                                    <div class="content">
+                                        <a href="./XemChiTietSanPham?maSanPham=<s:property value='MaSanPham'/>">
+                                            <img src="<s:property value="hinhDaiDien"/>" width="210" height="250"/>
+                                            <p class="title"><s:property value="moTaSanPham"/></p>
+                                        </a>
+                                        <p class="sanpham_gia"><span>Giá: <s:property value="gia"/>(VNĐ)</span></p>
+                                        
+                                    </div>
+                                </li>  
+                            </s:iterator>                                               
                         </ul>
                     </div>     
                     <div class="clr"></div>

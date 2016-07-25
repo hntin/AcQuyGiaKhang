@@ -44,49 +44,25 @@ public class LoaiSanPhamMapper extends DBMapper {
         }
         return loaiSPDTO;
     }
-    
-    public LoaiSanPhamDTO getLoaiSanPhamDTO(String maLoaiSanPham) throws Exception {
+
+    public LoaiSanPhamDTO getLoaiSanPhamDTO(int maLoaiSanPham) throws Exception {
         LoaiSanPhamDTO loaiSPDTO = new LoaiSanPhamDTO();
-        PreparedStatement stmt_1 = null;
-        PreparedStatement stmt_2 = null;
+        PreparedStatement stmt = null;
 
         try {
             StringBuffer sql_1 = new StringBuffer();
             sql_1.append(" SELECT * FROM " + Database.Name + "." + DBTable.LOAISP + " lsp");
             sql_1.append(" WHERE lsp.MaLoaiSanPham = ?");
-            stmt_1 = getConnection().prepareStatement(sql_1.toString());
-            stmt_1.setString(1, maLoaiSanPham);
-            ResultSet rs = stmt_1.executeQuery();
+            stmt = getConnection().prepareStatement(sql_1.toString());
+            stmt.setInt(1, maLoaiSanPham);
+            ResultSet rs = stmt.executeQuery();
             if ((rs != null) && (rs.next())) {
                 loaiSPDTO.setMaLSP(rs.getInt("MaLoaiSanPham"));
                 loaiSPDTO.setTenLSP(rs.getString("TenLoaiSanPham"));
                 loaiSPDTO.setMaLoaiSPCha(rs.getInt("MaLoaiCha"));
-
-                // Lấy danh sách các loại sản phẩm con (cấp dưới)
-                StringBuffer sql_2 = new StringBuffer();
-                sql_2.append(" SELECT * FROM " + Database.Name + "." + DBTable.LOAISP + " lsp");
-                sql_2.append(" WHERE lsp.MaLoaiCha = ?");
-                sql_2.append(" ORDER BY lsp.MaLoaiSanPham");
-                stmt_2 = getConnection().prepareStatement(sql_2.toString());
-                stmt_2.setString(1, maLoaiSanPham);
-                rs = stmt_2.executeQuery();
-                List<LoaiSanPhamDTO> dsLoaiSanPhamDTO = new ArrayList<>();
-                while (rs.next()) {
-                    LoaiSanPhamDTO loaiSPConDTO = new LoaiSanPhamDTO();
-                    loaiSPDTO.setMaLSP(rs.getInt("MaLoaiSanPham"));
-                    loaiSPDTO.setTenLSP(rs.getString("TenLoaiSanPham"));
-                    loaiSPDTO.setMaLoaiSPCha(rs.getInt("MaLoaiCha"));
-                    dsLoaiSanPhamDTO.add(loaiSPDTO);
-                }
-                loaiSPDTO.setDsLSPCon(dsLoaiSanPhamDTO);
             }
 
-            if (stmt_1 != null) {
-                stmt_1.close();
-            }
-            if (stmt_2 != null) {
-                stmt_2.close();
-            }
+            stmt.close();
         } catch (Exception e) {
             throw e;
         }
@@ -161,11 +137,13 @@ public class LoaiSanPhamMapper extends DBMapper {
             PreparedStatement stmt = getConnection().prepareStatement(sql.toString());
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                LoaiSanPhamDTO loaiSPDTO = new LoaiSanPhamDTO();
-               loaiSPDTO.setMaLSP(rs.getInt("MaLoaiSanPham"));
-                loaiSPDTO.setTenLSP(rs.getString("TenLoaiSanPham"));
-                loaiSPDTO.setMaLoaiSPCha(rs.getInt("MaLoaiCha"));
-                dsLoaiSanPhamDTO.add(loaiSPDTO);
+                if (rs.getInt("MaLoaiCha") != -1) { // Bỏ qua nút gốc
+                    LoaiSanPhamDTO loaiSPDTO = new LoaiSanPhamDTO();
+                    loaiSPDTO.setMaLSP(rs.getInt("MaLoaiSanPham"));
+                    loaiSPDTO.setTenLSP(rs.getString("TenLoaiSanPham"));
+                    loaiSPDTO.setMaLoaiSPCha(rs.getInt("MaLoaiCha"));
+                    dsLoaiSanPhamDTO.add(loaiSPDTO);
+                }
             }
             stmt.close();
         } catch (SQLException e) {

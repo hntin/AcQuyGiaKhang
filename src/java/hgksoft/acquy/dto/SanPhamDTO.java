@@ -13,7 +13,7 @@ public class SanPhamDTO {
     private String moTaSanPham;
     private String gia;
     private String hinhDaiDien;
-    private String maLoaiSanPham;
+    private int maLoaiSanPham;
     private String tenLoaiSanPham;
     private String maNhaCC;
     private String tenNhaCC;
@@ -63,11 +63,11 @@ public class SanPhamDTO {
         this.hinhDaiDien = hinhDaiDien;
     }
 
-    public String getMaLoaiSanPham() {
+    public int getMaLoaiSanPham() {
         return maLoaiSanPham;
     }
 
-    public void setMaLoaiSanPham(String maLoaiSanPham) {
+    public void setMaLoaiSanPham(int maLoaiSanPham) {
         this.maLoaiSanPham = maLoaiSanPham;
     }
 

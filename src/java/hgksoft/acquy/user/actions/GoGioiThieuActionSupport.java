@@ -63,8 +63,6 @@ public class GoGioiThieuActionSupport extends ActionSupport {
         this.selectedLoaiXe = selectedLoaiXe;
     }
 
-    
-    
     public GoGioiThieuActionSupport() {
     }
 

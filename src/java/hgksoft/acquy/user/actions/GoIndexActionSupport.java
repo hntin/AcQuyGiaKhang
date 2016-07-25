@@ -4,9 +4,11 @@ import com.opensymphony.xwork2.ActionSupport;
 import hgksoft.acquy.bo.DongXeBO;
 import hgksoft.acquy.bo.LoaiXeBO;
 import hgksoft.acquy.bo.HangXeBO;
+import hgksoft.acquy.bo.SanPhamBO;
 import hgksoft.acquy.dto.DongXeDTO;
 import hgksoft.acquy.dto.LoaiXeDTO;
 import hgksoft.acquy.dto.HangXeDTO;
+import hgksoft.acquy.dto.SanPhamDTO;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +24,20 @@ public class GoIndexActionSupport extends ActionSupport {
     private List<DongXeDTO> dsDongXeDTO = new ArrayList<>();
     private String selectedHangXe;
     private String selectedLoaiXe;
+    private HashMap<Integer, List<SanPhamDTO>> dsLoaiSP_SanPham_HM = new HashMap<Integer, List<SanPhamDTO>>();
+
+    public GoIndexActionSupport(String selectedHangXe, String selectedLoaiXe) {
+        this.selectedHangXe = selectedHangXe;
+        this.selectedLoaiXe = selectedLoaiXe;
+    }
+
+    public HashMap<Integer, List<SanPhamDTO>> getDsLoaiSP_SanPham_HM() {
+        return dsLoaiSP_SanPham_HM;
+    }
+
+    public void setDsLoaiSP_SanPham_HM(HashMap<Integer, List<SanPhamDTO>> dsLoaiSP_SanPham_HM) {
+        this.dsLoaiSP_SanPham_HM = dsLoaiSP_SanPham_HM;
+    }
 
     public List<DongXeDTO> getDsDongXeDTO() {
         return dsDongXeDTO;
@@ -67,7 +83,6 @@ public class GoIndexActionSupport extends ActionSupport {
     }
 
     public String execute() throws Exception {
-        
         //<editor-fold defaultstate="collapsed" desc=" Khởi tạo menu bên trái">
         HangXeBO hxBO = new HangXeBO();
         List<HangXeDTO> dsHangXeDTO = hxBO.getDSTatCaHangXe();
@@ -78,8 +93,10 @@ public class GoIndexActionSupport extends ActionSupport {
                 dsHangXeHM.put(hxDTO.getMaHangXe(), hxDTO.getTenHangXe());
             }
         }
-        
-        if (selectedHangXe == null) selectedHangXe = "0"; // Default value
+
+        if (selectedHangXe == null) {
+            selectedHangXe = "0"; // Default value
+        }
         if (selectedHangXe != null && !selectedHangXe.equalsIgnoreCase("0")) {
             LoaiXeBO lxBO = new LoaiXeBO();
             List<LoaiXeDTO> dsLoaiXeDTO = lxBO.getDSLoaiXe(selectedHangXe);
@@ -91,12 +108,30 @@ public class GoIndexActionSupport extends ActionSupport {
                 }
             }
         }
-                
+
         if (selectedLoaiXe != null && !selectedLoaiXe.equalsIgnoreCase("0")) {
             DongXeBO dxBO = new DongXeBO();
             this.dsDongXeDTO = dxBO.getDSDongXeTheoLX(selectedLoaiXe, selectedHangXe);
         }
         //</editor-fold>
+
+        // Lấy danh sách sản phẩm tiêu biểu
+        List<SanPhamDTO> dsLSP_SP_DTO;
+        SanPhamBO spBO = new SanPhamBO();
+        List<SanPhamDTO> dsSanPhamDTO = spBO.getDSTatCaSanPham();
+        for (SanPhamDTO spDTO : dsSanPhamDTO) {
+            int maLSP = spDTO.getMaLoaiSanPham();
+            if (!dsLoaiSP_SanPham_HM.containsKey(maLSP)) {
+                dsLSP_SP_DTO = new ArrayList<SanPhamDTO>();
+            } else {
+                dsLSP_SP_DTO = dsLoaiSP_SanPham_HM.get(maLSP);
+            }
+            
+            if (dsLSP_SP_DTO.size() <= 3)
+                dsLSP_SP_DTO.add(spDTO);
+            
+            dsLoaiSP_SanPham_HM.put(maLSP, dsLSP_SP_DTO);
+        }
 
         return SUCCESS;
     }

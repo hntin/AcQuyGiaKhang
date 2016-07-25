@@ -104,6 +104,20 @@ public class SanPhamBO {
         return dsSanPhamDTO;
     }
     
+    public List<SanPhamDTO> getDSSanPham(int maLoaiSanPham) throws Exception {
+        List<SanPhamDTO> dsSanPhamDTO = null;
+        SanPhamMapper mapper = null;
+        try {
+            mapper = new SanPhamMapper();
+            dsSanPhamDTO = mapper.getDSSanPham(maLoaiSanPham);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            mapper.closeConnection();
+        }
+        return dsSanPhamDTO;
+    }
+    
     public List<SanPhamDTO> getDSTatCaSanPham() throws Exception {
         List<SanPhamDTO> dsSanPhamDTO = null;
         SanPhamMapper mapper = null;

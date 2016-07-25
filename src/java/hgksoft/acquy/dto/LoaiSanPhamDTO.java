@@ -55,9 +55,9 @@ public class LoaiSanPhamDTO {
         List<LoaiSanPhamDTO> dsNodeCon = node.getDsLSPCon();
         if (dsNodeCon != null) {
             for (LoaiSanPhamDTO i : node.getDsLSPCon()) {
-                JSONObject chil = createNode(i);
-                arr.add(chil);
-                chil.put("items", retrieveData(i));
+                JSONObject child = createNode(i);
+                arr.add(child);
+                child.put("items", retrieveData(i));
             }
             root.put("items", arr);
         }
@@ -69,7 +69,7 @@ public class LoaiSanPhamDTO {
         JSONObject node = new JSONObject();
         node.put("id", new Integer(dto.getMaLSP()));
         node.put("text", dto.tenLSP);
-        node.put("open", new Integer(0));
+        node.put("open", new Integer(1));
         return node;
     }
 

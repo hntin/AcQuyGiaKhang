@@ -7,7 +7,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="./css/user/style.css"/>
-        <link rel="stylesheet" type="text/css" href="./css/admin/admin-style.css"/>
         <link rel="stylesheet" href="./css/user/flexslider.css" type="text/css" media="screen" />
     </head>
     <body>
@@ -55,7 +54,7 @@
                                         <img src="<s:property value="%{HinhDaiDien}"/>" width="210" height="250"/>
                                         <p class="title"><s:property value="%{TenSanPham}"/></p>
                                     </a>
-                                    <p class="price">Giá: <s:property value="%{Gia}"/> (VNĐ)</p>
+                                    <p class="sanpham_gia"><span>Giá: <s:property value="%{Gia}"/> (VNĐ)</span></p>
                                 </div>
                             </li>                            
                             </s:iterator>

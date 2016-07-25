@@ -17,34 +17,21 @@ import org.json.simple.JSONObject;
  */
 public class LoaiSanPhamBO {
 
-    public JSONObject createNode(int id, String text, int open) {
-        JSONObject node = new JSONObject();
-        node.put("id", new Integer(id));
-        node.put("text", text);
-        node.put("open", new Integer(open));
-        return node;
-    }
-
-    private LoaiSanPhamDTO createTree(LoaiSanPhamDTO root, List<LoaiSanPhamDTO> lookupTable) {
-        List<LoaiSanPhamDTO> dsNodeCon = getDsNodeCon(root, lookupTable);
-        if (dsNodeCon.size() > 0) {
-            root.setDsLSPCon(dsNodeCon);
-            for (LoaiSanPhamDTO i : dsNodeCon) {
-                createTree(i, lookupTable);
-            }
-        }
-        return root;
-    }
-
     public JSONArray getJsonTree() throws Exception{
         LoaiSanPhamMapper mapper = null;
         JSONArray jsonTree = new JSONArray();
+        
         try {
             mapper = new LoaiSanPhamMapper();
             List<LoaiSanPhamDTO> lookupTable = mapper.getDSTatCaLoaiSanPham();
+            // Lấy node gốc và ắt đầu tạo cây
             LoaiSanPhamDTO rootLSPDTO = mapper.getRootLSP();
             createTree(rootLSPDTO, lookupTable);
             return rootLSPDTO.toJsonObject();
+            
+            // Lấy danh sách node cấp 1 và tạo các cây con tương ứng
+            
+            
         } catch (Exception ex) {
             Logger.getLogger(LoaiSanPhamBO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -52,6 +39,17 @@ public class LoaiSanPhamBO {
                 mapper.closeConnection();
         }
         return jsonTree;
+    }
+    
+    private LoaiSanPhamDTO createTree(LoaiSanPhamDTO root, List<LoaiSanPhamDTO> lookupTable) {
+        List<LoaiSanPhamDTO> dsNodeCon = getDsNodeCon(root, lookupTable);
+        if (dsNodeCon != null && dsNodeCon.size() > 0) {
+            root.setDsLSPCon(dsNodeCon);
+            for (LoaiSanPhamDTO i : dsNodeCon) {
+                createTree(i, lookupTable);
+            }
+        }
+        return root;
     }
 
     private List<LoaiSanPhamDTO> getDsNodeCon(LoaiSanPhamDTO node, List<LoaiSanPhamDTO> lookupTable) {
@@ -113,7 +111,7 @@ public class LoaiSanPhamBO {
         return result;
     }
 
-    public LoaiSanPhamDTO getLoaiSanPhamDTO(String maLoaiSanPham) throws Exception {
+    public LoaiSanPhamDTO getLoaiSanPhamDTO(int maLoaiSanPham) throws Exception {
         LoaiSanPhamMapper mapper = null;
         LoaiSanPhamDTO lspDTO;
         try {

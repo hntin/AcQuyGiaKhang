@@ -7,7 +7,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="./css/user/style.css"/>
-        <link rel="stylesheet" type="text/css" href="./css/admin/admin-style.css"/>
         <link rel="stylesheet" href="./css/user/flexslider.css" type="text/css" media="screen" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.min.js">\x3C/script>')</script>
@@ -21,8 +20,9 @@
                 <div id="main-right">
                     <div id="product-image">
                         <a href="./XemChiTietSanPham">
-                            <img src="<s:property value="%{sanphamDTO.HinhDaiDien}"/>" width="280" height="320"/>
+                            <img src="<s:property value="%{sanphamDTO.HinhDaiDien}"/>" width="275" height="310"/>
                             <p class="title"><s:property value="%{sanphamDTO.TenSanPham}"/></p>
+                            <p class="sanpham_gia"><span style="margin-left: 80px;">Giá: <s:property value="%{sanphamDTO.Gia}"/> (VNĐ)</span></p>
                         </a>
                     </div>
                     <div id="product-detail">
