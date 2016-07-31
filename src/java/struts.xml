@@ -313,6 +313,9 @@
         </action>
         <action name="LietKeSanPham" class="hgksoft.acquy.user.actions.LietKeSanPhamActionSupport">
             <result name="success">./WEB-INF/jsp/user/LietKeSanPham.jsp</result>
-        </action>  
+        </action> 
+        <action name="ChuyenMucAcQuy" class="hgksoft.acquy.user.actions.ChuyenMucAcQuyActionSupport">
+            <result name="success">./WEB-INF/jsp/user/ChuyenMucAcQuy.jsp</result>
+        </action> 
     </package>
 </struts>

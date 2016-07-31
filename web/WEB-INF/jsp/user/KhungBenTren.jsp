@@ -43,8 +43,8 @@
         <a href="./GoIndex"><img src="images/user/icons/home_w.png" /></a>
         <li style="border-left: 1px dotted whitesmoke"><a href="./GoIndex">Trang chủ</a></li>
         <li><a href="./GoGioiThieu">Giới thiệu</a></li>
-        <li><a href="#">Sản phẩm</a></li>
-        <li><a href="#">Chuyên mục ắc quy</a></li>
+        <li><a href="./GoIndex">Sản phẩm</a></li>
+        <li><a href="./ChuyenMucAcQuy">Chuyên mục ắc quy</a></li>
         <li><a href="#">Hướng dẫn mua hàng</a></li>
         <li><a href="#">Tuyển dụng</a></li>
         <li><a href="#">Liên hệ</a></li>

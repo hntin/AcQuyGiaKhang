@@ -17,30 +17,82 @@ import org.json.simple.JSONObject;
  */
 public class LoaiSanPhamBO {
 
-    public JSONArray getJsonTree() throws Exception{
+    public JSONArray getJsonTree() throws Exception {
         LoaiSanPhamMapper mapper = null;
-        JSONArray jsonTree = new JSONArray();
-        
+        LoaiSanPhamDTO rootLSPDTO = null;
         try {
             mapper = new LoaiSanPhamMapper();
             List<LoaiSanPhamDTO> lookupTable = mapper.getDSTatCaLoaiSanPham();
             // Lấy node gốc và ắt đầu tạo cây
-            LoaiSanPhamDTO rootLSPDTO = mapper.getRootLSP();
+            rootLSPDTO = mapper.getRootLSP();
             createTree(rootLSPDTO, lookupTable);
-            return rootLSPDTO.toJsonObject();
-            
-            // Lấy danh sách node cấp 1 và tạo các cây con tương ứng
-            
-            
         } catch (Exception ex) {
             Logger.getLogger(LoaiSanPhamBO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            if (mapper != null)
+            if (mapper != null) {
                 mapper.closeConnection();
+            }
         }
-        return jsonTree;
+        return rootLSPDTO.toJsonObject();
     }
-    
+
+    public String getTreeInJavaScript() throws Exception {
+        LoaiSanPhamMapper mapper = null;
+        String javaScriptCode = "";
+        try {
+            mapper = new LoaiSanPhamMapper();
+            List<LoaiSanPhamDTO> lookupTable = mapper.getDSTatCaLoaiSanPham();
+            List<LoaiSanPhamDTO> loaiSanPhamLevel2 = mapper.getDSLoaiSanPhamMucDuoi(1);
+            for (LoaiSanPhamDTO lsp2 : loaiSanPhamLevel2) {
+                List<LoaiSanPhamDTO> loaiSanPhamLevel3
+                        = mapper.getDSLoaiSanPhamMucDuoi(lsp2.getMaLSP());
+
+                JSONArray data = new JSONArray();
+
+                for (LoaiSanPhamDTO lspl3 : loaiSanPhamLevel3) {
+                    createTree(lspl3, lookupTable);
+                    data.addAll(lspl3.retrieveData(lspl3));
+                }
+
+                javaScriptCode += "var myTreeView"
+                        + lsp2.getMaLSP()
+                        + " = khungAccodion.cells(\""
+                        + +lsp2.getMaLSP() + "\").attachTreeView({items: " + data.toJSONString() + "}); \n"
+                        + "myTreeView" + lsp2.getMaLSP() + ".attachEvent(\"onSelect\", onSelectItemTreeView);\n";
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(LoaiSanPhamBO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (mapper != null) {
+                mapper.closeConnection();
+            }
+        }
+        return javaScriptCode;
+    }
+
+    public JSONArray getJsonAccordion() throws Exception {
+        LoaiSanPhamMapper mapper = null;
+        JSONArray accrdion = new JSONArray();
+        try {
+            mapper = new LoaiSanPhamMapper();
+            List<LoaiSanPhamDTO> loaiSanPhamLevel2 = mapper.getDSLoaiSanPhamMucDuoi(1);
+            accrdion = new JSONArray();
+            for (LoaiSanPhamDTO lsp : loaiSanPhamLevel2) {
+                JSONObject obj = new JSONObject();
+                obj.put("id", lsp.getMaLSP());
+                obj.put("text", lsp.getTenLSP());
+                accrdion.add(obj);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(LoaiSanPhamBO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (mapper != null) {
+                mapper.closeConnection();
+            }
+        }
+        return accrdion;
+    }
+
     private LoaiSanPhamDTO createTree(LoaiSanPhamDTO root, List<LoaiSanPhamDTO> lookupTable) {
         List<LoaiSanPhamDTO> dsNodeCon = getDsNodeCon(root, lookupTable);
         if (dsNodeCon != null && dsNodeCon.size() > 0) {

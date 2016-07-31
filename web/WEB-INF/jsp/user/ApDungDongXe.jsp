@@ -44,14 +44,14 @@
                             </tr>                            
                         </table>
                     </div>
-                    <h3>Danh mục sản phẩm tương thích</h3>
+                    <h3 class="page-caption">Danh mục sản phẩm tương thích</h3>
                     <div id="products">
                         <ul>
                             <s:iterator var="sanphamDTO" step="1" value="dsSanPhamTuongThichDTO">
                                 <s:set var="gia" value="%{Gia}"></s:set>
                                     <li>
                                         <div class="content">
-                                            <a href="./XemChiTietSanPham">
+                                            <a href="./XemChiTietSanPham?maSanPham=<s:property value='MaSanPham'/>">
                                                 <img src="<s:property value="%{HinhDaiDien}"/>" width="210" height="250"/>
                                             <p class="title"><s:property value="%{TenSanPham}"/></p>
                                         </a>

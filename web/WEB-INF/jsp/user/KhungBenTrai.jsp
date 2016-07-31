@@ -13,7 +13,11 @@
       href="codebase/fonts/font_roboto/roboto.css" />
 <link rel="stylesheet" type="text/css" href="codebase/dhtmlx.css" />
 <script src="codebase/dhtmlx.js"></script>
-
+<style>    
+    html {
+    overflow-y:scroll;
+}
+</style>
 <script type="text/javascript">
     function OnChangHangXe() {
         var strURL = window.location.href;
@@ -41,12 +45,12 @@
             document.getElementsByName("FormTimKiemApDungUser")[0].action = "./GoGioiThieu";
             document.getElementsByName("FormTimKiemApDungUser")[0].submit();
         }
-        
+
         if (strURL.indexOf("LietKeSanPham") >= 0) {
             document.getElementsByName("FormTimKiemApDungUser")[0].action = "./LietKeSanPham";
             document.getElementsByName("FormTimKiemApDungUser")[0].submit();
         }
-        
+
     }
 
     function OnChangeLoaiXe() {
@@ -96,43 +100,85 @@
 <%
     LoaiSanPhamBO lspBO = new LoaiSanPhamBO();
     JSONArray jsonTree = lspBO.getJsonTree();
+    JSONArray accodion = lspBO.getJsonAccordion();
+
 %>
 
 <script>
-    var myTreeView;
+    
     window.onload = function doOnLoad() {
-        myTreeView = new dhtmlXTreeView({
+        var khungAccodion = new dhtmlXAccordion({           
             parent: "menu-left",
-            items:<%=jsonTree.toJSONString()%>
+            items: <%=accodion.toJSONString()%>
         });
 
-        myTreeView.attachEvent("onClick", onClickItemTreeView);
-        myTreeView.attachEvent("onSelect", onSelectItemTreeView);
+        khungAccodion.attachEvent("onActive", function (id, state) {
+            onSelectItemTreeView(id);
+        });
+        
+        <%=lspBO.getTreeInJavaScript()%>
+        khungAccodion.cells(getCookie("last_id")).open();
+    }
+  
 
-//        myTreeView.attachEvent("onSelect", function (id, mode) {
-//            var xhttp = new XMLHttpRequest();
-//            xhttp.onreadystatechange = function () {
-//                if (xhttp.readyState == 4 && xhttp.status == 200) {
-//                    document.getElementById("demo").innerHTML += xhttp.responseText + "<br>";
-//                }
-//            };
-//            xhttp.open("POST", "./LietKeSanPham", true);
-//            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//            xhttp.send("select_id=" + id + "&select_mode=" + mode);
-//        });
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
     }
 
     function onSelectItemTreeView(id) {
+        setCookie("last_id", id, 1);
         document.getElementsByName("FormTimKiemApDungUser")[0].action = "./LietKeSanPham?maLoaiSanPham=" + id;
         document.getElementsByName("FormTimKiemApDungUser")[0].submit();
         return true;
     }
 
-    function onClickItemTreeView(id) {
-        alert(id);
-        return true;
-    }
 
+//    var myTreeView;
+//    window.onload = function doOnLoad() {
+//        myTreeView = new dhtmlXTreeView({
+//            parent: "menu-left",
+//            items:<%=jsonTree.toJSONString()%>
+//        });
+//
+//        myTreeView.attachEvent("onSelect", onSelectItemTreeView);
+//
+//////        myTreeView.attachEvent("onSelect", function (id, mode) {
+//////            var xhttp = new XMLHttpRequest();
+//////            xhttp.onreadystatechange = function () {
+//////                if (xhttp.readyState == 4 && xhttp.status == 200) {
+//////                    document.getElementById("demo").innerHTML += xhttp.responseText + "<br>";
+//////                }
+//////            };
+//////            xhttp.open("POST", "./LietKeSanPham", true);
+//////            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//////            xhttp.send("select_id=" + id + "&select_mode=" + mode);
+//////        });
+//    }
+
+//    function onSelectItemTreeView(id) {
+//        //setCookie("last_id", id, 1);
+//        document.getElementsByName("FormTimKiemApDungUser")[0].action = "./LietKeSanPham?maLoaiSanPham=" + id;
+//        document.getElementsByName("FormTimKiemApDungUser")[0].submit();
+//        return true;
+//    }
 
 </script>
 

@@ -22,7 +22,7 @@
             <div id="main">
                 <jsp:include page="KhungBenTrai.jsp" /> 
                 <div id="main-right">
-                    <h3 class="page-caption">Danh sách sản phẩm tương ứng</h3>
+                    <h3 class="page-caption">Chuyên Mục Ắc Quy</h3>
                     <div id="products">
                         <ul>
                             <s:iterator var="spDTO" step="1" value="dsSanPhamDTO">

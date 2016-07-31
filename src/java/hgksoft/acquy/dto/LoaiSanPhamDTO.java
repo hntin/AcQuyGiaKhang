@@ -48,7 +48,7 @@ public class LoaiSanPhamDTO {
         this.dsLSPCon = dsLSPCon;
     }
 
-    private JSONArray retrieveData(LoaiSanPhamDTO node) {
+    public JSONArray retrieveData(LoaiSanPhamDTO node) {
         JSONArray tree = new JSONArray();
         JSONObject root = createNode(node);
         JSONArray arr = new JSONArray();
