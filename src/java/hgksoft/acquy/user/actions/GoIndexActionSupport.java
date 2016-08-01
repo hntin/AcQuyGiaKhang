@@ -127,7 +127,7 @@ public class GoIndexActionSupport extends ActionSupport {
                 dsLSP_SP_DTO = dsLoaiSP_SanPham_HM.get(maLSP);
             }
             
-            if (dsLSP_SP_DTO.size() <= 3)
+            if (dsLSP_SP_DTO.size() <= 10)
                 dsLSP_SP_DTO.add(spDTO);
             
             dsLoaiSP_SanPham_HM.put(maLSP, dsLSP_SP_DTO);

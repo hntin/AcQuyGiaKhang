@@ -8,16 +8,16 @@
             <div class="flexslider">
                 <ul class="slides">
                     <li>
-                        <img src="images/user/slider/Osram01.jpg" style="width: 250px; height: 344px"/>
+                        <img src="images/user/slider/Osram01.jpg" style="width: 645px; height: 344px"/>
                     </li>
                     <li>
-                        <img src="images/user/slider/Battery01.jpg" style="width: 250px; height: 344px"/>
+                        <img src="images/user/slider/Battery01.jpg" style="width: 645px; height: 344px"/>
                     </li>
                     <li>
-                        <img src="images/user/slider/Battery02.jpg" style="width: 250px; height: 344px"/>
+                        <img src="images/user/slider/Battery02.jpg" style="width: 645px; height: 344px"/>
                     </li>
                     <li>
-                        <img src="images/user/slider/Horn01.jpg" style="width: 250px; height: 344px"/>
+                        <img src="images/user/slider/Horn01.jpg" style="width: 645px; height: 344px"/>
                     </li>
                 </ul>
             </div>
@@ -53,7 +53,7 @@
             <a href="skype:haophanhgk?chat" nickname="haophanhgk" type="skype">
                 <img src="./images/user/icons/skype-48.png">
             </a>                    
-            <a title="" href="nhung.hgk?chat">
+            <a title="" href="skype:nhung.hgk?chat">
                 <img src="./images/user/icons/skype-48.png" alt="Nick Skype status">
             </a>
             <a title="" href="skype:facebook:hnthanh.hgk?chat">

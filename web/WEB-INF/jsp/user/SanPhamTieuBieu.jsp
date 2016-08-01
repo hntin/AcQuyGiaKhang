@@ -21,10 +21,10 @@
                                 <p class="title"><s:property value="#spDTO.TenSanPham"/></p>  
                                 <s:set var="gia" value="#spDTO.Gia"></s:set>
                                 <s:if test="#gia == 0">
-                                    <p class="sanpham_gia"><span>Giá: Liên hệ</span></p>
+                                    <p class="sanpham_gia"><span>Liên hệ</span></p>
                                 </s:if>
                                 <s:else>
-                                    <p class="sanpham_gia"><span>Giá: <s:property value="#spDTO.Gia"/> (VNĐ)</span></p>
+                                    <p class="sanpham_gia"><span><s:property value="#spDTO.Gia"/> (VNĐ)</span></p>
                                 </s:else>
                         </div>
                     </li>
