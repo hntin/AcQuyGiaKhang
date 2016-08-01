@@ -18,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -52,141 +51,143 @@ public class CapNhatSanPhamActionSupport extends ActionSupport {
     private HashMap<Integer, String> loaiSanPhamHM = new HashMap<>();
     private HashMap<String, String> tinhTrangHM = new HashMap<>();
 
+    //<editor-fold defaultstate="collapsed" desc="Getter & Setter">
     public SanPhamDTO getSanphamDTO() {
         return sanphamDTO;
     }
-
+    
     public void setSanphamDTO(SanPhamDTO sanphamDTO) {
         this.sanphamDTO = sanphamDTO;
     }
-
+    
     public String getMaSanPhamUpdate() {
         return maSanPhamUpdate;
     }
-
+    
     public void setMaSanPhamUpdate(String maSanPhamUpdate) {
         this.maSanPhamUpdate = maSanPhamUpdate;
     }
-
+    
     public String getMaSanPham() {
         return maSanPham;
     }
-
+    
     public void setMaSanPham(String maSanPham) {
         this.maSanPham = maSanPham;
     }
-
+    
     public String getTenSanPham() {
         return tenSanPham;
     }
-
+    
     public void setTenSanPham(String tenSanPham) {
         this.tenSanPham = tenSanPham;
     }
-
+    
     public String getMoTaSanPham() {
         return moTaSanPham;
     }
-
+    
     public void setMoTaSanPham(String moTaSanPham) {
         this.moTaSanPham = moTaSanPham;
     }
-
+    
     public String getGia() {
         return gia;
     }
-
+    
     public void setGia(String gia) {
         this.gia = gia;
     }
-
+    
     public int getSelectedLoaiSP() {
         return selectedLoaiSP;
     }
-
+    
     public void setSelectedLoaiSP(int selectedLoaiSP) {
         this.selectedLoaiSP = selectedLoaiSP;
     }
-
+    
     public String getSelectedNoiSanXuat() {
         return selectedNoiSanXuat;
     }
-
+    
     public void setSelectedNoiSanXuat(String selectedNoiSanXuat) {
         this.selectedNoiSanXuat = selectedNoiSanXuat;
     }
-
+    
     public String getSelectedHangSanXuat() {
         return selectedHangSanXuat;
     }
-
+    
     public void setSelectedHangSanXuat(String selectedHangSanXuat) {
         this.selectedHangSanXuat = selectedHangSanXuat;
     }
-
+    
     public File getUploadImage() {
         return uploadImage;
     }
-
+    
     public void setUploadImage(File uploadImage) {
         this.uploadImage = uploadImage;
     }
-
+    
     public String getUploadImageFileName() {
         return uploadImageFileName;
     }
-
+    
     public void setUploadImageFileName(String uploadImageFileName) {
         this.uploadImageFileName = uploadImageFileName;
     }
-
+    
     public String getSelectedTinhTrangSP() {
         return selectedTinhTrangSP;
     }
-
+    
     public void setSelectedTinhTrangSP(String selectedTinhTrangSP) {
         this.selectedTinhTrangSP = selectedTinhTrangSP;
     }
-
+    
     public String getMsg() {
         return msg;
     }
-
+    
     public void setMsg(String msg) {
         this.msg = msg;
     }
-
+    
     public HashMap<String, String> getNoiSanXuatHM() {
         return noiSanXuatHM;
     }
-
+    
     public void setNoiSanXuatHM(HashMap<String, String> noiSanXuatHM) {
         this.noiSanXuatHM = noiSanXuatHM;
     }
-
+    
     public HashMap<String, String> getHangSanXuatHM() {
         return hangSanXuatHM;
     }
-
+    
     public void setHangSanXuatHM(HashMap<String, String> hangSanXuatHM) {
         this.hangSanXuatHM = hangSanXuatHM;
     }
-
+    
     public HashMap<Integer, String> getLoaiSanPhamHM() {
         return loaiSanPhamHM;
     }
-
+    
     public void setLoaiSanPhamHM(HashMap<Integer, String> loaiSanPhamHM) {
         this.loaiSanPhamHM = loaiSanPhamHM;
     }
-
+    
     public HashMap<String, String> getTinhTrangHM() {
         return tinhTrangHM;
     }
-
+    
     public void setTinhTrangHM(HashMap<String, String> tinhTrangHM) {
         this.tinhTrangHM = tinhTrangHM;
     }
+//</editor-fold>
 
     @Override
     public void validate() {
@@ -217,7 +218,7 @@ public class CapNhatSanPhamActionSupport extends ActionSupport {
                 tinhTrangHM.put(tinhTrangSPDTO.getMaTinhTrang(), tinhTrangSPDTO.getTenTinhTrang());
             }
 
-            this.sanphamDTO = getUpdateSanPhamDTO();
+            this.sanphamDTO = initSanPhamDTOFromView();
             this.sanphamDTO.setHinhDaiDien(sanphamBO.getSanPhamDTO(maSanPham).getHinhDaiDien());
 
             // Có sự thay đổi mã sản phẩm
@@ -259,30 +260,19 @@ public class CapNhatSanPhamActionSupport extends ActionSupport {
     }
 
     @Override
-    public String execute() throws Exception {
+    public String execute() throws Exception {        
         SanPhamBO sanphamBO = new SanPhamBO();
-        SanPhamDTO oldSPDTO = sanphamBO.getSanPhamDTO(maSanPham);
-        SanPhamDTO updatedSPDTO = getUpdateSanPhamDTO();
-        // Cập nhật & upload file hình đại diện
-        if (uploadImage != null) {
-            String uploadFileStr = uploadHinhAnh();
-            if (uploadFileStr != null) {
-                updatedSPDTO.setHinhDaiDien(uploadFileStr);
-            }
-        } else {
-            updatedSPDTO.setHinhDaiDien(oldSPDTO.getHinhDaiDien());
-        }
+        SanPhamDTO updatedSPDTO = initSanPhamDTOFromView();
 
         // Có thay đổi mã
         if (!maSanPhamUpdate.equalsIgnoreCase(maSanPham)) {
-            // Xóa dòng cũ 
+            // Xóa dòng cũ, thêm dòng mới
             sanphamBO.deleteSanPham(maSanPham);
-            // Thêm dòng mới
-            sanphamBO.createSanPham(updatedSPDTO);
+            sanphamBO.createSanPham(updatedSPDTO, uploadImage, uploadImageFileName);
             msg = "Cập nhật thành công";
-        } else { // Không thay đổi mã --> Cập nhật thông tin SP đang xét
-            // Cập nhật thông tin
-            int result = sanphamBO.updateSanPham(updatedSPDTO);
+        } else { 
+            // Không thay đổi mã --> Cập nhật thông tin SP đang xét
+            int result = sanphamBO.updateSanPham(maSanPham, updatedSPDTO, uploadImage, uploadImageFileName);
             if (result == 1) {
                 msg = "Cập nhật thành công";
             } else {
@@ -294,41 +284,7 @@ public class CapNhatSanPhamActionSupport extends ActionSupport {
         return SUCCESS;
     }
 
-    public String uploadHinhAnh() throws Exception {
-        //<editor-fold defaultstate="collapsed" desc="Kiểm tra trạng thái login trong Session">
-        HttpServletRequest request = ServletActionContext.getRequest();
-        HttpSession session = request.getSession();
-        Boolean logged = (Boolean) session.getAttribute("isLogged");
-        if (logged == null || logged == false) {
-            return "logout";
-        }
-        //</editor-fold>
-        
-        ServletContext servletContext = getServletContext();
-        String contextPath = servletContext.getRealPath(File.separator);
-        String imageFilePath = contextPath + CommonConst.PATH_UPLOAD_PRODUCTIMAGES;
-        try {
-            System.out.println("Src File name: " + uploadImage.getName());
-            System.out.println("Dst File name: " + uploadImageFileName);
-
-            File imageDir;
-            if (Files.isDirectory(Paths.get(imageFilePath))) {
-                System.out.println("Da ton tai");
-            } else {
-                imageDir = new File(imageFilePath);
-                imageDir.mkdir();
-            }
-
-            File destFile = new File(imageFilePath, uploadImageFileName);
-            FileUtils.copyFile(uploadImage, destFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return CommonConst.PATH_UPLOAD_PRODUCTIMAGES + "/" + uploadImageFileName;
-    }
-
-    public SanPhamDTO getUpdateSanPhamDTO() {
+    private SanPhamDTO initSanPhamDTOFromView() {
         SanPhamDTO spDTO = new SanPhamDTO();
         spDTO.setMaSanPham(maSanPhamUpdate.trim());
         spDTO.setTenSanPham(tenSanPham.trim());
@@ -340,5 +296,4 @@ public class CapNhatSanPhamActionSupport extends ActionSupport {
         spDTO.setMaTinhTrang(selectedTinhTrangSP);
         return spDTO;
     }
-
 }

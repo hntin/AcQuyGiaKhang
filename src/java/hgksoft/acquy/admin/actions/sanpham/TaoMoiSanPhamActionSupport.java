@@ -6,31 +6,25 @@ import hgksoft.acquy.bo.NhaCungCapBO;
 import hgksoft.acquy.bo.QuocGiaBO;
 import hgksoft.acquy.bo.SanPhamBO;
 import hgksoft.acquy.bo.TinhTrangBO;
-import hgksoft.acquy.constant.CommonConst;
 import hgksoft.acquy.dto.LoaiSanPhamDTO;
 import hgksoft.acquy.dto.NhaCCDTO;
 import hgksoft.acquy.dto.QuocGiaDTO;
 import hgksoft.acquy.dto.SanPhamDTO;
 import hgksoft.acquy.dto.TinhTrangDTO;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
-import static org.apache.struts2.ServletActionContext.getServletContext;
 
 /**
  *
  * @author HNTIN
  */
 public class TaoMoiSanPhamActionSupport extends ActionSupport {
+
     private String maSP;
     private String tenSP;
     private String moTaSP;
@@ -178,20 +172,20 @@ public class TaoMoiSanPhamActionSupport extends ActionSupport {
         Pattern pattern = Pattern.compile("\\W");
         if (maSP == null || maSP.equals("")) {
             addFieldError("maSP", "Nhập mã sản phẩm");
-        } 
+        }
 
         if (tenSP == null || tenSP.equals("")) {
             addFieldError("tenSP", "Nhập tên sản phẩm");
-        } 
-        
+        }
+
         if (moTaSP == null || moTaSP.equals("")) {
             addFieldError("moTaSP", "Nhập mô tả sản phẩm");
         }
-        
+
         if (gia == null || gia.equals("")) {
             addFieldError("gia", "Nhập giá sản phẩm");
-        } 
-        
+        }
+
         LoaiSanPhamBO loaiSPBO = new LoaiSanPhamBO();
         QuocGiaBO quocgiaBO = new QuocGiaBO();
         NhaCungCapBO nccBO = new NhaCungCapBO();
@@ -229,39 +223,6 @@ public class TaoMoiSanPhamActionSupport extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        String uploadFileStr = "";
-        SanPhamBO sanphamBO = new SanPhamBO();
-        SanPhamDTO sanphamDTO = sanphamBO.getSanPhamDTO(maSP);
-        if (sanphamDTO != null) {
-            if (sanphamDTO.getMaSanPham() != null && !sanphamDTO.getMaSanPham().equals("")) {
-                addFieldError("maSP", "Mã sản phẩm đã tồn tại. Vui lòng nhập mã khác!");;
-            } else {
-                if (uploadImage != null) {
-                    uploadFileStr = uploadHinhAnh();
-                }
-                if (uploadFileStr != null) {
-                    sanphamDTO = new SanPhamDTO();
-                    sanphamDTO.setMaSanPham(maSP);
-                    sanphamDTO.setTenSanPham(tenSP);
-                    sanphamDTO.setMoTaSanPham(moTaSP);
-                    sanphamDTO.setGia(gia);
-                    sanphamDTO.setMaTinhTrang(selectedTinhTrangSP);
-                    sanphamDTO.setHinhDaiDien(uploadFileStr);
-                    sanphamDTO.setMaNhaCC(selectedHangSanXuat);
-                    sanphamDTO.setMaNuocSanXuat(selectedNoiSanXuat);
-                    sanphamDTO.setMaLoaiSanPham(selectedLoaiSP);
-                    int result = sanphamBO.createSanPham(sanphamDTO);
-                    if (result == 1) {
-                        msg = "Thêm mới sản phẩm thành công";
-                    }
-                }
-            }
-        }
-
-        return SUCCESS;
-    }
-
-    public String uploadHinhAnh() throws Exception {
         //<editor-fold defaultstate="collapsed" desc="Kiểm tra trạng thái login trong Session">
         HttpServletRequest request = ServletActionContext.getRequest();
         HttpSession session = request.getSession();
@@ -270,29 +231,34 @@ public class TaoMoiSanPhamActionSupport extends ActionSupport {
             return "logout";
         }
         //</editor-fold>
-        
-        ServletContext servletContext = getServletContext();
-        String contextPath = servletContext.getRealPath(File.separator);
-        String imageFilePath = contextPath + CommonConst.PATH_UPLOAD_PRODUCTIMAGES;
-        try {
-            System.out.println("Src File name: " + uploadImage.getName());
-            System.out.println("Dst File name: " + uploadImageFileName);
 
-            File imageDir;
-            if (Files.isDirectory(Paths.get(imageFilePath))) {
-                System.out.println("Da ton tai");
+        SanPhamBO sanphamBO = new SanPhamBO();
+        SanPhamDTO sanphamDTO = sanphamBO.getSanPhamDTO(maSP);
+        if (sanphamDTO != null) {
+            if (sanphamDTO.getMaSanPham() != null && !sanphamDTO.getMaSanPham().equals("")) {
+                addFieldError("maSP", "Mã sản phẩm đã tồn tại. Vui lòng nhập mã khác!");;
             } else {
-                imageDir = new File(imageFilePath);
-                imageDir.mkdir();
+                sanphamDTO = initSanPhamDTOFromView();
+                int result = sanphamBO.createSanPham(sanphamDTO, uploadImage, uploadImageFileName);
+                if (result == 1) {
+                    msg = "Thêm mới sản phẩm thành công";
+                }
             }
-
-            File destFile = new File(imageFilePath, uploadImageFileName);
-            FileUtils.copyFile(uploadImage, destFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
         }
-        return CommonConst.PATH_UPLOAD_PRODUCTIMAGES + "/" + uploadImageFileName;
+
+        return SUCCESS;
     }
 
+    private SanPhamDTO initSanPhamDTOFromView() {
+        SanPhamDTO spDTO = new SanPhamDTO();
+        spDTO.setMaSanPham(maSP.trim());
+        spDTO.setTenSanPham(tenSP.trim());
+        spDTO.setMoTaSanPham(moTaSP.trim());
+        spDTO.setGia(gia.trim());
+        spDTO.setMaTinhTrang(selectedTinhTrangSP);
+        spDTO.setMaNhaCC(selectedHangSanXuat);
+        spDTO.setMaNuocSanXuat(selectedNoiSanXuat);
+        spDTO.setMaLoaiSanPham(selectedLoaiSP);
+        return spDTO;
+    }
 }
