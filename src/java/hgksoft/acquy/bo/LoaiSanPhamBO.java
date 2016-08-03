@@ -1,9 +1,7 @@
 package hgksoft.acquy.bo;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import hgksoft.acquy.dbaccess.LoaiSanPhamMapper;
 import hgksoft.acquy.dto.LoaiSanPhamDTO;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
