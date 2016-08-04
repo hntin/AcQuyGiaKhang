@@ -64,9 +64,10 @@
             // Lấy dòng xe được chọn
             var selectedLoaiXe = document.getElementsByName("selectedLoaiXe")[0].value;
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: "./LietKeDongXe",
                 data: "selectedLoaiXe=" + selectedLoaiXe,
+                async: false,
                 success: function (response) {
                     // we have the response
                     $('#modal-body').html(response);
